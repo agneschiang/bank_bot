@@ -15,8 +15,8 @@ exports.startDialog = function (bot) {
             var timeEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'time');
 
             // Checks if the for entity was found
-            if (foodEntity) {
-                session.send('The opening hour is %s...', timeEntity.entity);
+            if (timeEntity) {
+                session.send('Here is the opening hour <br /> Mon - Thur: 8:00AM - 5:00PM <br /> Fri: 8:00AM - 6:60PM <br /> Sat - Sun: Closed');
                // Here you would call a function to get the office hour for that day information
 
             } else {
@@ -26,4 +26,30 @@ exports.startDialog = function (bot) {
     }).triggerAction({
         matches: 'OfficeHour'
     });
+
+    bot.dialog('WelcomeIntent', function (session, args){
+        // Insert logic here later
+        if(!isAttachment(session)){
+            
+                        //Pull out the food entity from the session if it exists
+                        var foodEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'food');
+            
+                        // Checks if the for entity was foud
+                        session.send("Hi, how can I help you")
+                    }
+    }).triggerAction({
+        matches: 'WelcomeIntent'
+    });
+}
+
+function isAttachment(session) { 
+    var msg = session.message.text;
+    if ((session.message.attachments && session.message.attachments.length > 0) || msg.includes("http")) {
+        
+        //call custom vision here later
+        return true;
+    }
+    else {
+        return false;
+    }
 }
