@@ -70,7 +70,7 @@ exports.postReservation = function sendData(url, PhoneNumber, date, time){
       });
 };
 
-exports.deleteBooking = function deleteData(url,session, PhoneNumber ,date, id, callback){
+exports.deleteBooking = function deleteData(url,session, PhoneNumber , time, id, callback){
     var options = {
         url: url + "\\" + id,
         method: 'DELETE',

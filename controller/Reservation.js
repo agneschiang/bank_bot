@@ -11,11 +11,11 @@ exports.displayBooking = function getBookingData(session, PhoneNumber, time){
     
 };
 
-exports.deleteBooking = function deleteBooking(session,PhoneNumber,date, time){
+exports.deleteBooking = function deleteBooking(session,PhoneNumber,time){
     var url  = 'https://2017bankbot.azurewebsites.net/tables/BankBot';
 
 
-    rest.getBookingData(url,session, PhoneNumber, time, function(message,session,PhoneNumber, time){
+    rest.getBookingData(url, session, PhoneNumber, time, function(message,session, PhoneNumber, time){
      var   Booking = JSON.parse(message);
 
         for(var i in Booking) {
@@ -23,7 +23,7 @@ exports.deleteBooking = function deleteBooking(session,PhoneNumber,date, time){
             if (Booking[i].time === time && Booking[i].PhoneNumber === PhoneNumber) {
 
 
-                rest.deleteFavouriteFood(url,session,PhoneNumber,time, date, Booking[i].id ,handleDeletedFoodResponse)
+                rest.deleteBooking(url,session,PhoneNumber,time, Booking[i].id ,handleDeletedFoodResponse)
 
             }
         }
@@ -63,7 +63,7 @@ function handleBookingResponse(message, session, PhoneNumber, time) {
     
 }
 
-function handleDeletedFoodResponse(body,session,username, favouriteFood){
+function handleDeletedFoodResponse(body,session, PhoneNumber, time){
     
             console.log('Done');
     

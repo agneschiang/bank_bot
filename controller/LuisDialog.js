@@ -141,11 +141,13 @@ exports.startDialog = function (bot) {
         
                             // Pulls out the food entity from the session if it exists
                             var cancelEntity = builder.EntityRecognizer.findEntity(session.dialogData.args.intent.entities, 'cancel');
+                            var dateEntity = builder.EntityRecognizer.findEntity(session.dialogData.args.intent.entities, 'bookingDate');
+                            
         
                             // Checks if the for entity was found
                             if (cancelEntity) {
                                 session.send('Deleting \'%s\'...', cancelEntity.entity);
-                                food.deleteBooking(session,session.conversationData['PhoneNumber'],cancelEntity.entity); //<--- CALLL WE WANT
+                                food.deleteBooking(session,session.conversationData['PhoneNumber'], dateEntity.entity); //<--- CALLL WE WANT
                             } else {
                                 session.send("No food identified! Please try again");
                             }
