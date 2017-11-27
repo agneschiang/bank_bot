@@ -44,7 +44,7 @@ exports.getBookingData = function getData(url, session, PhoneNumber, time, callb
     };
     
 
-exports.postReservation = function sendData(url, , PhoneNumber, date, time){
+exports.postReservation = function sendData(url, PhoneNumber, date, time){
     var options = {
         url: url,
         method: 'POST',
