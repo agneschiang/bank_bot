@@ -1,4 +1,8 @@
 var builder = require('botbuilder');
+var balance = require('./Account');
+var booking = require('./Reservation');
+//const botbuilder = require('something');
+//const fbTemplete = botBuilder.fbTemplete;
 // Some sections have been omitted
 
 exports.startDialog = function (bot) {
@@ -27,12 +31,124 @@ exports.startDialog = function (bot) {
         matches: 'OfficeHour'
     });
 
+    bot.dialog('Account', [
+        function (session, args, next) {
+            session.dialogData.args = args || {};        
+            if (!session.conversationData["PhoneNumber"]) {
+                builder.Prompts.text(session, "Enter a PhoneNumber ");       
+
+            } else {
+                next(); // Skip if we already have this info.
+            }
+        },
+        function (session, results, next) {
+            if (!isAttachment(session)) {
+                if (results.response) {
+                    session.conversationData["PhoneNumber"] = results.response;
+                }
+
+                session.send("Retrieving your Account");
+                balance.displayphonenumber(session, session.conversationData["PhoneNumber"]);  // <---- THIS LINE HERE IS WHAT WE NEED 
+            }
+        }
+    ]).triggerAction({
+        matches: 'Account'
+    });
+
+    bot.dialog('Reservation', [
+        function (session, args, next) {
+            if (!isAttachment(session)){
+            session.dialogData.args = args || {};        
+                if (!session.conversationData["PhoneNumber"]) {
+                    builder.Prompts.text(session, "Enter a PhoneNumber.");    
+                } else {
+                    next(); // Skip if we already have this info.
+                }
+        }},
+
+
+
+        function (session, results, next) {
+
+            if(!isAttachment(session)){
+                if(results.response){
+                    session.conversationData["PhoneNumber"] = results.response;
+                    
+                }
+                var reservation = builder.EntityRecognizer.findEntity(session.dialog.args.intent.entities, 'booking');
+                if(reservation){
+                    session.send("Thank your for yout booking");
+                    booking.sendReservation(session, session.conversationData["PhoneNumber"]);
+                }
+            }
+        }
+    ]).triggerAction({
+        matches: 'Reservation'
+    }).beginDialogAction('Date', 'Date', {match: /^Date$/});
+
+    bot.dialog('Date', [
+        function (session, args, next) {
+            session.dialogData.args = args || {};        
+            if (!session.conversationData["Date"]) {
+                builder.Prompts.text(session, "Enter a Date");       
+
+            } else {
+                next(); // Skip if we already have this info.
+            }
+        }]).triggerAction({
+            match: 'Date'});
+
+    bot.dialog('Transaction', function (session, args) {
+        if (!isAttachment(session)) {
+
+            // Pulls out the time entity from the session if it exists
+            var transactionEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'transaction');
+
+            // Checks if the for entity was found
+            if (transactionEntity) {
+                session.send('Here is the instruction <br />');
+               // Here you would call a function to get the office hour for that day information
+
+            } else {
+                session.send("Sorry I don't quite understand! Please try again");
+            }
+        }
+    }).triggerAction({
+        matches: 'Transaction'
+    });
+
+    
+
+    //bot.dialog('Location', function (session, args){
+        //if(!isAttachment(session)){
+            //var locationEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'place');
+           // module.exports = botBuilder{      
+            //if(locationEntity){
+              //  return new fbTemplate.Button('Please select one of the area')
+              //  .addButton('Auckland CBD', "Auckland CBD")
+               // .addButton('NewMArket', 'NewMarket')
+               // .addButton('East Auckland', 'East Auckland')
+               // .get();
+           // }
+           // else {
+            //    session.sned("Sorry I don't quite understand! Please try again");
+           // }
+        //}
+   // }
+
+  //  }).triggerAction({
+   //     matches: 'Location'
+   // });
+
+    
+
+
     bot.dialog('WelcomeIntent', function (session, args){
         // Insert logic here later
         if(!isAttachment(session)){
             
                         //Pull out the food entity from the session if it exists
-                        var foodEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'food');
+                        var welcomeEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'welcome');
             
                         // Checks if the for entity was foud
                         session.send("Hi, how can I help you")
@@ -40,6 +156,7 @@ exports.startDialog = function (bot) {
     }).triggerAction({
         matches: 'WelcomeIntent'
     });
+
 }
 
 function isAttachment(session) { 
