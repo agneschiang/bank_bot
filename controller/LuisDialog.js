@@ -56,47 +56,27 @@ exports.startDialog = function (bot) {
     });
 
     bot.dialog('Reservation', [
-        function (session, args, next) {
-            if (!isAttachment(session)){
-            session.dialogData.args = args || {};        
-                if (!session.conversationData["PhoneNumber"]) {
-                    builder.Prompts.text(session, "Enter a PhoneNumber.");    
-                } else {
-                    next(); // Skip if we already have this info.
-                }
-        }},
-
-
-
-        function (session, results, next) {
-
-            if(!isAttachment(session)){
-                if(results.response){
-                    session.conversationData["PhoneNumber"] = results.response;
-                    
-                }
-                var reservation = builder.EntityRecognizer.findEntity(session.dialog.args.intent.entities, 'booking');
-                if(reservation){
-                    session.send("Thank your for yout booking");
-                    booking.sendReservation(session, session.conversationData["PhoneNumber"]);
-                }
-            }
+        function (session) {
+            builder.Prompts.text(session, "Please provide a date (e.g.: 19-11-2017)");
+        },
+        function (session, results) {
+            session.dialogData.reservationDate = builder.EntityRecognizer.resolveTime([results.response]);
+            builder.Prompts.text(session, "Please provide a time (e.g.: 14:00)");
+        },
+        function (session, results) {
+            session.dialogData.reservationTime = results.response;
+            builder.Prompts.text(session, "Please provide a phone number");
+        },
+        function (session, results) {
+            session.dialogData.PhoneNumber = results.response;
+    
+            // Process request and display reservation details
+            session.send(`Reservation confirmed. <br />Reservation details: <br/> Date: ${session.dialogData.reservationDate} <br/> Time:${session.dialogData.reservationTime}  <br/>Reservation name: ${session.dialogData.PhoneNumber}`);
+            session.endDialog();
         }
     ]).triggerAction({
         matches: 'Reservation'
-    }).beginDialogAction('Date', 'Date', {match: /^Date$/});
-
-    bot.dialog('Date', [
-        function (session, args, next) {
-            session.dialogData.args = args || {};        
-            if (!session.conversationData["Date"]) {
-                builder.Prompts.text(session, "Enter a Date");       
-
-            } else {
-                next(); // Skip if we already have this info.
-            }
-        }]).triggerAction({
-            match: 'Date'});
+    });
 
     bot.dialog('Transaction', function (session, args) {
         if (!isAttachment(session)) {
