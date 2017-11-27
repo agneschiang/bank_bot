@@ -146,8 +146,8 @@ exports.startDialog = function (bot) {
         
                             // Checks if the for entity was found
                             if (cancelEntity && dateEntity) {
-                                session.send('Deleting \'%s\'...', cancelEntity.entity);
-                                food.deleteBooking(session,session.conversationData['PhoneNumber'], dateEntity.entity); //<--- CALLL WE WANT
+                                session.send('Deleting \'%s\'...', dateEntity.entity);
+                                reserv.deleteBooking(session,session.conversationData['PhoneNumber'], dateEntity.entity); //<--- CALLL WE WANT
                             } else {
                                 session.send("No food identified! Please try again");
                             }
