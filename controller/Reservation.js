@@ -1,8 +1,8 @@
 var rest = require('../API/Restclient');
 
-exports.sendReservation = function postReservation(session, username, PhoneNumber, date, time){
+exports.sendReservation = function postReservation(session, PhoneNumber, date, time){
     var url = 'https://2017bankbot.azurewebsites.net/tables/BankBot';
-    rest.postReservation(url, username, PhoneNumber, date, time)
+    rest.postReservation(url, PhoneNumber, date, time)
 };
 
 exports.displayBooking = function getBookingData(session, PhoneNumber, time){
