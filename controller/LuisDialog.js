@@ -119,7 +119,11 @@ exports.startDialog = function (bot) {
         }
     ]).triggerAction({
         matches:'DisplayBooking'
-    });
+
+    }).reloadAction(
+        "retartDisplay", "Ok let's start over",{
+            matches: /^start over$/i,
+        });
 
 
     bot.dialog('DeleteBooking', [function (session, args, next) {
@@ -213,10 +217,22 @@ exports.startDialog = function (bot) {
                         var welcomeEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'welcome');
             
                         // Checks if the for entity was foud
-                        session.send("Hi, how can I help you")
+                        session.send("Welcome to this bot, you can do the following under this bot <br/> 1. Check your account <br/> 2. check the office hour <br/> 3. Make yor booking (e.g. booking at 13 on the 16th) <br/> 4. Cancel yor booking (e.g. cancel my booking on the 16th) <br/> 5. View Your booking (e.g. check my booking on the 16th) <br/> 6. Quit to start over ");
                     }
     }).triggerAction({
         matches: 'WelcomeIntent'
+    });
+
+
+    bot.dialog('Quit', function (session, args){
+        if(!Attachment(session)){
+            var quitEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'quit');
+            session.sned("Thank you for using our service");
+
+            
+        }
+    }).triggerAction({
+        matches: "Quit"
     });
 
 }
