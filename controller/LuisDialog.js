@@ -1,6 +1,7 @@
 var builder = require('botbuilder');
 var balance = require('./Account');
-var booking = require('./Reservation');
+var reserv = require('./Reservation');
+//var isAttachment = false;
 //const botbuilder = require('something');
 //const fbTemplete = botBuilder.fbTemplete;
 // Some sections have been omitted
@@ -56,27 +57,75 @@ exports.startDialog = function (bot) {
     });
 
     bot.dialog('Reservation', [
-        function (session, args) {
-            builder.Prompts.text(session, "Please provide a date (e.g.: 19-11-2017)");
+        function (session, args, next) {
+            session.dialogData.args = args || {};        
+            if (!session.conversationData["PhoneNumber"]) {
+                builder.Prompts.text(session, "Enter a Phone number to setup your account.");                
+            } else {
+                next(); // Skip if we already have this info.
+            }
         },
         function (session, results, next) {
-            session.dialogData.reservationDate = results.response;
-            builder.Prompts.text(session, "Please provide a time (e.g.: 14:00)");
-        },
-        function (session, results, next) {
-            session.dialogData.reservationTime = results.response;
-            builder.Prompts.text(session, "Please provide a phone number");
-        },
-        function (session, results, next) {
-            session.dialogData.PhoneNumber = results.response;
+            if (!isAttachment(session)) {
+
+                if (results.response) {
+                    session.conversationData["PhoneNumber"] = results.response;
+                }
+                // Pulls out the food entity from the session if it exists
+                var bookingEntity = builder.EntityRecognizer.findEntity(session.dialogData.args.intent.entities, 'booking');
+                var timeEntity = builder.EntityRecognizer.findEntity(session.dialogData.args.intent.entities, 'bookingDate');
     
-            // Process request and display reservation details
-            session.send(`Reservation confirmed. <br />Reservation details: <br/> Date: ${session.dialogData.reservationDate} <br/> Time:${session.dialogData.reservationTime}  <br/>Reservation name: ${session.dialogData.PhoneNumber}`);
-            session.endDialog();
+                // Checks if the food entity was found
+                if (bookingEntity && timeEntity) {
+                    session.send('Your booking confirm: <br> Time: \%s\ <br/> Date: \%s\.' , bookingEntity.entity, timeEntity.entity);
+                    reserv.sendReservation(session, session.conversationData["PhoneNumber"], bookingEntity.entity, timeEntity.entity); // <-- LINE WE WANT
+    
+                } else {
+                    session.send("No food identified!!!");
+                }
+            }
         }
+                    
+        
     ]).triggerAction({
         matches: 'Reservation'
     });
+
+    bot.dialog('DeleteBooking', [function (session, args, next) {
+        
+                    session.dialogData.args = args || {};
+                    if (!session.conversationData["PhoneNumber"]) {
+                        builder.Prompts.text(session, "Enter a Phone Number to setup your account.");
+                    } else {
+                        next(); // Skip if we already have this info.
+                    }
+                },
+                function (session, results,next) {
+                        if (!isAttachment(session)) {
+                            if (results.response){
+                                session.conversationData['PhoneNumber'] = results.response;
+                            }
+        
+                            session.send("You want to delete your booking.");
+        
+                            // Pulls out the food entity from the session if it exists
+                            var cancelEntity = builder.EntityRecognizer.findEntity(session.dialogData.args.intent.entities, 'cancel');
+        
+                            // Checks if the for entity was found
+                            if (cancelEntity) {
+                                session.send('Deleting \'%s\'...', cancelEntity.entity);
+                                food.deleteBooking(session,session.conversationData['PhoneNumber'],cancelEntity.entity); //<--- CALLL WE WANT
+                            } else {
+                                session.send("No food identified! Please try again");
+                            }
+                        }
+        
+            }
+                // Insert delete logic here later
+            ]).triggerAction({
+                matches: 'DeleteFavourite'
+        
+            });
 
     bot.dialog('Transaction', function (session, args) {
         if (!isAttachment(session)) {

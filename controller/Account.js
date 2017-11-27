@@ -1,13 +1,13 @@
 var rest = require('../API/Restclient');
 
 exports.displayAccountData = function getAccountData(session, username, password){
-    var url = 'http://bankbotmsa.azurewebsites.net/tables/BankBot';
+    var url = 'https://bankbotmsa.azurewebsites.net/tables/BankBot';
     rest.getAccountData(url, session, username, password, handleAccountResponse)
     
 };
 
 exports.displayphonenumber = function getPhoneData(session, PhoneNumber){
-    var url = 'http://bankbotmsa.azurewebsites.net/tables/BankBot';
+    var url = 'https://bankbotmsa.azurewebsites.net/tables/BankBot';
     rest.getPhoneData(url, session, PhoneNumber, handlePhoneResponse)
 
 };
