@@ -83,7 +83,7 @@ exports.deleteBooking = function deleteData(url,session, PhoneNumber , time, id,
     request(options,function (err, res, body){
         if( !err && res.statusCode === 200){
             console.log(body);
-            callback(body,session,PhoneNumber, date);
+            callback(body,session,PhoneNumber, time);
         }else {
             console.log(err);
             console.log(res);
