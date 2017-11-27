@@ -32,6 +32,18 @@ exports.getPhoneData = function getData(url, session, PhoneNumber, callback){
         });
     };
 
+exports.getBookingData = function getData(url, session, PhoneNumber, time, callback){
+    
+        request.get(url, {'headers':{'ZUMO-API-VERSION': '2.0.0'}}, function(err,res,body){
+            if(err){
+                console.log(err);
+            }else {
+                callback(body, session, PhoneNumber, time);
+            }
+        });
+    };
+    
+
 exports.postReservation = function sendData(url, PhoneNumber, date, time){
     var options = {
         url: url,

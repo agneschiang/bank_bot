@@ -5,13 +5,13 @@ exports.sendReservation = function postReservation(session, PhoneNumber, date, t
     rest.postReservation(url, PhoneNumber, date, time)
 };
 
-exports.displayBooking = function getBooking(session, PhoneNumber){
+exports.displayBooking = function getBookingData(session, PhoneNumber, time){
     var url = 'https://bankbotmsa.azurewebsites.net/tables/BankBot';
-    rest.getBooking(url, session, PhoneNumber, handleBookingResponse)
+    rest.getBookingData(url, session, PhoneNumber, time,  handleBookingResponse)
     
 };
 
-exports.deleteBooking = function deleteBooking(session,PhoneNumber,date){
+exports.deleteBooking = function deleteBooking(session,PhoneNumber,date, time){
     var url  = 'https://bankbotmsa.azurewebsites.net/tables/BankBot';
 
 
@@ -34,27 +34,31 @@ exports.deleteBooking = function deleteBooking(session,PhoneNumber,date){
 
 };
 
-function handleBookingFoodResponse(message, session, PhoneNumber) {
+function handleBookingResponse(message, session, PhoneNumber, time) {
     var BookingResponse = JSON.parse(message);
     var booking = [];
     for (var index in BookingResponse) {
         var phoneNumberReceived = BookingResponse[index].PhoneNumber;
+        var timeRecieved = BookingResponse[index].time;
         console.log(BookingResponse[index]);
-        var aBooking = BookingResponse[index].date;
+        var bookingDate = BookingResponse[index].date;
+        var firstname = BookingResponse[index].fistname;
+        var lastname = BookingResponse[index].lastname;
+
 
         //Convert to lower case whilst doing comparison to ensure the user can type whatever they like
-        if (PhoneNumber == phoneNumberReceived) {
+        if (PhoneNumber == phoneNumberReceived && time == timeRecieved) {
             //Add a comma after all favourite foods unless last one
-            if(bookingResponse.length - 1) {
-                booking.push(aBooking);
+            if(booking.length - 1) {
+                booking.push(bookingDate);
             }
             else {
-                booking.push(aBooking);
+                booking.push(bookingDate);
             }
         }        
     }
     
     // Print all favourite foods for the user that is currently logged in
-    session.send("%s, your favourite foods are: %s", username, allFoods);                
+    session.send("%s <br/> Your booking is at %s", firstname + " " + lastname, booking);                
     
 }

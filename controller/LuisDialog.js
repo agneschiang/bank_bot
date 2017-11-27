@@ -91,6 +91,37 @@ exports.startDialog = function (bot) {
         matches: 'Reservation'
     });
 
+    bot.dialog('DisplayBooking', [
+        function (session, args, next) {
+            session.dialogData.args = args || {};        
+            if (!session.conversationData["PhoneNumber"]) {
+                builder.Prompts.text(session, "Enter a Phone number to setup your account.");                
+            } else {
+                next(); // Skip if we already have this info.
+            }
+        },
+        function (session, results, next) {
+            if (!isAttachment(session)) {
+
+                if (results.response) {
+                    session.conversationData["PhoneNumber"] = results.response;
+                }
+                var checkingEntity = builder.EntityRecognizer.findEntity(session.dialogData.args.intent.entities, 'check');
+                var dateEntity = builder.EntityRecognizer.findEntity(session.dialogData.args.intent.entities, 'bookingDate');
+
+                if(checkingEntity && dateEntity){
+
+                
+                    session.send("Your booking on the \%s\ is... ", dateEntity.entity);
+                    reserv.displayBooking(session, session.conversationData["PhoneNumber"], dateEntity.entity);
+                }
+            }
+        }
+    ]).triggerAction({
+        matches:'DisplayBooking'
+    });
+
+
     bot.dialog('DeleteBooking', [function (session, args, next) {
         
                     session.dialogData.args = args || {};
@@ -123,7 +154,7 @@ exports.startDialog = function (bot) {
             }
                 // Insert delete logic here later
             ]).triggerAction({
-                matches: 'DeleteFavourite'
+                matches: 'DeleteBooking'
         
             });
 
