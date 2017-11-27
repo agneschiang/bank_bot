@@ -56,18 +56,18 @@ exports.startDialog = function (bot) {
     });
 
     bot.dialog('Reservation', [
-        function (session) {
+        function (session, args) {
             builder.Prompts.text(session, "Please provide a date (e.g.: 19-11-2017)");
         },
-        function (session, results) {
-            session.dialogData.reservationDate = builder.EntityRecognizer.resolveTime([results.response]);
+        function (session, results, next) {
+            session.dialogData.reservationDate = results.response;
             builder.Prompts.text(session, "Please provide a time (e.g.: 14:00)");
         },
-        function (session, results) {
+        function (session, results, next) {
             session.dialogData.reservationTime = results.response;
             builder.Prompts.text(session, "Please provide a phone number");
         },
-        function (session, results) {
+        function (session, results, next) {
             session.dialogData.PhoneNumber = results.response;
     
             // Process request and display reservation details
