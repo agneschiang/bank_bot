@@ -78,7 +78,7 @@ exports.startDialog = function (bot) {
                 // Checks if the food entity was found
                 if (bookingEntity && timeEntity) {
                     session.send('Your booking confirm: <br> Time: \%s\ <br/> Date: \%s\.' , bookingEntity.entity, timeEntity.entity);
-                    reserv.sendReservation(session, session.conversationData["PhoneNumber"], bookingEntity.entity, timeEntity.entity); // <-- LINE WE WANT
+                    reserv.sendReservation(session, username, session.conversationData["PhoneNumber"], bookingEntity.entity, timeEntity.entity); // <-- LINE WE WANT
     
                 } else {
                     session.send("No food identified!!!");

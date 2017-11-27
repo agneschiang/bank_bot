@@ -1,29 +1,29 @@
 var rest = require('../API/Restclient');
 
-exports.sendReservation = function postReservation(session, PhoneNumber, date, time){
-    var url = 'https://bankbotmsa.azurewebsites.net/tables/BankBot';
-    rest.postReservation(url, PhoneNumber, date, time)
+exports.sendReservation = function postReservation(session, username, PhoneNumber, date, time){
+    var url = 'https://2017bankbot.azurewebsites.net/tables/BankBot';
+    rest.postReservation(url, username, PhoneNumber, date, time)
 };
 
 exports.displayBooking = function getBookingData(session, PhoneNumber, time){
-    var url = 'https://bankbotmsa.azurewebsites.net/tables/BankBot';
+    var url = 'https://2017bankbot.azurewebsites.net/tables/BankBot';
     rest.getBookingData(url, session, PhoneNumber, time,  handleBookingResponse)
     
 };
 
 exports.deleteBooking = function deleteBooking(session,PhoneNumber,date, time){
-    var url  = 'https://bankbotmsa.azurewebsites.net/tables/BankBot';
+    var url  = 'https://2017bankbot.azurewebsites.net/tables/BankBot';
 
 
-    rest.getFavouriteFood(url,session, username,function(message,session,username){
-     var   allFoods = JSON.parse(message);
+    rest.getBookingData(url,session, PhoneNumber, time, function(message,session,PhoneNumber, time){
+     var   Booking = JSON.parse(message);
 
-        for(var i in allFoods) {
+        for(var i in Booking) {
 
-            if (allFoods[i].favouriteFood === favouriteFood && allFoods[i].username === username) {
+            if (Booking[i].time === time && Booking[i].PhoneNumber === PhoneNumber) {
 
 
-                rest.deleteFavouriteFood(url,session,username,favouriteFood, allFoods[i].id ,handleDeletedFoodResponse)
+                rest.deleteFavouriteFood(url,session,PhoneNumber,time, date, Booking[i].id ,handleDeletedFoodResponse)
 
             }
         }
@@ -62,3 +62,10 @@ function handleBookingResponse(message, session, PhoneNumber, time) {
     session.send("%s <br/> Your booking is at %s", firstname + " " + lastname, booking[0]);                
     
 }
+
+function handleDeletedFoodResponse(body,session,username, favouriteFood){
+    
+            console.log('Done');
+    
+    
+    }
