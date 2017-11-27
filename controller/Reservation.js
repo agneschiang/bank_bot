@@ -59,6 +59,6 @@ function handleBookingResponse(message, session, PhoneNumber, time) {
     }
     
     // Print all favourite foods for the user that is currently logged in
-    session.send("%s <br/> Your booking is at %s", firstname + " " + lastname, booking);                
+    session.send("%s <br/> Your booking is at %s", firstname + " " + lastname, booking[0]);                
     
 }
