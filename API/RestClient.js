@@ -91,3 +91,14 @@ exports.deleteBooking = function deleteData(url,session, PhoneNumber , time, id,
     })
 
 };
+
+exports.getYelpData = function getData(url,bearer,session, callback){
+    
+        request.get(url,{'auth': { 'bearer': bearer}} ,function(err,res,body){
+            if(err){
+                console.log(err);
+            }else {
+                callback(body,session);
+            }
+        });
+    };

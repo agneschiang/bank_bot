@@ -1,6 +1,8 @@
 var builder = require('botbuilder');
 var balance = require('./Account');
 var reserv = require('./Reservation');
+var customVision = require('./CustomVision');
+var location = require('./Map');
 //var isAttachment = false;
 //const botbuilder = require('something');
 //const fbTemplete = botBuilder.fbTemplete;
@@ -182,26 +184,24 @@ exports.startDialog = function (bot) {
 
     
 
-    //bot.dialog('Location', function (session, args){
-        //if(!isAttachment(session)){
-            //var locationEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'place');
-           // module.exports = botBuilder{      
-            //if(locationEntity){
-              //  return new fbTemplate.Button('Please select one of the area')
-              //  .addButton('Auckland CBD', "Auckland CBD")
-               // .addButton('NewMArket', 'NewMarket')
-               // .addButton('East Auckland', 'East Auckland')
-               // .get();
-           // }
-           // else {
-            //    session.sned("Sorry I don't quite understand! Please try again");
-           // }
-        //}
-   // }
-
-  //  }).triggerAction({
-   //     matches: 'Location'
-   // });
+    bot.dialog('Location', function (session, args) {
+        
+                if (!isAttachment(session)) {
+                    // Pulls out the food entity from the session if it exists
+                    var locationEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'place');
+        
+                    // Checks if the for entity was found
+                    if (locationEntity) {
+                        session.send('Looking for ATM detail');
+                        restaurant.displayAddress(locationEntity.entity, "auckland", session);
+                    } else {
+                        location.send("No food identified! Please try again");
+                    }
+               }
+        
+            }).triggerAction({
+                matches: 'Location'
+            });
 
     
 
@@ -228,7 +228,7 @@ exports.startDialog = function (bot) {
 function isAttachment(session) { 
     var msg = session.message.text;
     if ((session.message.attachments && session.message.attachments.length > 0) || msg.includes("http")) {
-        
+        customVision.retreiveMessage(session);
         //call custom vision here later
         return true;
     }
