@@ -221,7 +221,16 @@ exports.startDialog = function (bot) {
     });
 
 
-    bot.endConversationAction('Quit', 'Hope you enjoy our services :)', { matches: /^Quit/i });
+    bot.endConversationAction('Quit', 'Hope you enjoy our services :)', function (session, args){
+        if(!isAttachment(session)){
+            session.conversationData = {}
+            session.dialogData = {}
+        }
+    }).triggerAction({
+        matches: /^Quit/i
+    });
+    
+    
 
 }
 
