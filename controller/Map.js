@@ -1,7 +1,7 @@
 var rest = require('../API/RestClient');
 var builder = require('botbuilder');
 
-exports.displayMap = function getMapData(bank, region, session){
+exports.displayAddress = function getMapData(bank, region, session){
     var url = 'https://api.yelp.com/v3/businesses/search?term='+ bank +'&location=' + region + '&limit=5';
     var auth = 'BjSvhpAZ84uttmEOPzgkkUEo6HVIBwG_0aO00tZuQmuYfADZdoPPt3CY81ocUsWMbI8mG5DZsEu0hBD1-Ke2vn4JJQS3I9AWBnRIcTDi6g6mILuBseEVXYA16hEWWnYx';
     rest.getMapData(url,auth,session,displayAddress);
