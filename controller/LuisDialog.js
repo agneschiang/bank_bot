@@ -193,9 +193,9 @@ exports.startDialog = function (bot) {
                     // Checks if the for entity was found
                     if (locationEntity) {
                         session.send('Looking for ATM detail');
-                        restaurant.displayAddress(locationEntity.entity, "auckland", session);
+                        location.displayAddress(locationEntity.entity, "auckland", session);
                     } else {
-                        location.send("No food identified! Please try again");
+                        session.send("No food identified! Please try again");
                     }
                }
         
