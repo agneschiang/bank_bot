@@ -102,3 +102,14 @@ exports.getYelpData = function getData(url,bearer,session, callback){
             }
         });
     };
+
+exports.getCurrency = function getData(url, session, currency, callback){
+    
+        request.get(url, function(err,res,body){
+            if(err){
+                console.log(err);
+            }else {
+                callback(body, currency, session);
+            }
+        });
+    };

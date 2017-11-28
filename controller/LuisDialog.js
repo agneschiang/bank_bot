@@ -3,6 +3,7 @@ var balance = require('./Account');
 var reserv = require('./Reservation');
 var customVision = require('./CustomVision');
 var location = require('./Map');
+var currency = require('./currency');
 //var isAttachment = false;
 //const botbuilder = require('something');
 //const fbTemplete = botBuilder.fbTemplete;
@@ -34,6 +35,7 @@ exports.startDialog = function (bot) {
         matches: 'OfficeHour'
     });
 
+
     bot.dialog('Account', [
         function (session, args, next) {
             session.dialogData.args = args || {};        
@@ -49,7 +51,7 @@ exports.startDialog = function (bot) {
                 if (results.response) {
                     session.conversationData["PhoneNumber"] = results.response;
                 }
-                
+
                 session.send("Retrieving your Account");
                 balance.displayphonenumber(session, session.conversationData["PhoneNumber"]);  // <---- THIS LINE HERE IS WHAT WE NEED 
             }
@@ -192,7 +194,7 @@ exports.startDialog = function (bot) {
         
                     // Checks if the for entity was found
                     if (locationEntity) {
-                        session.send('Looking for %s detail...', locationEntity.entities);
+                        session.send('Looking for %s detail...', locationEntity.entity);
                         location.displayAddress(locationEntity.entity, "auckland", session);
                     } else {
                         session.send("No food identified! Please try again");
@@ -205,6 +207,21 @@ exports.startDialog = function (bot) {
 
     
 
+    bot.dialog('Currency', function(session, args) {
+        if(!isAttachment(session)){
+            var currencyEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'unit');
+
+            if(currencyEntity){
+                session.send('Looking for the currency %s', currencyEntity.entity);
+                currency.displayCurrencyData(currencyEntity.entity, session);
+            }
+            else{
+                session.send("No Category identified! Please try again");
+            }
+        }
+    }).triggerAction({
+        matches: 'Currency'
+    });
 
     bot.dialog('WelcomeIntent', function (session, args){
         // Insert logic here later
@@ -222,6 +239,7 @@ exports.startDialog = function (bot) {
 
 
     bot.endConversationAction('Quit', 'Hope you enjoy our services :)', { matches: /^Quit/i });
+    bot.endConversationAction('StartOver', 'Type the category that you want to start over',{ matches: /^StartOver/i });
 
 }
 

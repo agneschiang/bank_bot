@@ -42,9 +42,6 @@ function handleBookingResponse(message, session, PhoneNumber, time) {
         var timeRecieved = BookingResponse[index].time;
         console.log(BookingResponse[index]);
         var bookingDate = BookingResponse[index].date;
-        var firstname = BookingResponse[index].fistname;
-        var lastname = BookingResponse[index].lastname;
-
 
         //Convert to lower case whilst doing comparison to ensure the user can type whatever they like
         if (PhoneNumber == phoneNumberReceived && time == timeRecieved) {
@@ -55,11 +52,15 @@ function handleBookingResponse(message, session, PhoneNumber, time) {
             else {
                 booking.push(bookingDate);
             }
-        }        
+            session.send("Your booking is at %s", booking[0]);    
+        }    
+        else{
+            session.send("You don't have any booking on the %s ", timeRecieved);
+            
+         }    
     }
     
-    // Print all favourite foods for the user that is currently logged in
-    session.send("%s <br/> Your booking is at %s", firstname + " " + lastname, booking[0]);                
+            
     
 }
 
