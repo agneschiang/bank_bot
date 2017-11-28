@@ -55,12 +55,17 @@ function handlePhoneResponse(message, session, PhoneNumber) {
                 phone.push(checkedAcc);
                 phone.push(savedAcc);
             }
+            
             else{
-                session.send("Sorry you type in a wrong number");
+        
 
                 phone.push(checkedAcc);
                 phone.push(savedAcc)
             }
+        }
+        else{
+            builder.Prompts.text(session, "Yor have typed the wrong number, please try again.");
+            session.beginDialog('Account');
         }
         
     }
