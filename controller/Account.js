@@ -56,6 +56,8 @@ function handlePhoneResponse(message, session, PhoneNumber) {
                 phone.push(savedAcc);
             }
             else{
+                session.send("Sorry you type in a wrong number");
+
                 phone.push(checkedAcc);
                 phone.push(savedAcc)
             }
@@ -63,6 +65,6 @@ function handlePhoneResponse(message, session, PhoneNumber) {
         
     }
 
-    session.send("%s <br/> Here is your account detail: <br/>Checked Account: %s <br/> Saved Account: %s", firstname + " " + lastname, phone[0], phone[1]);
+    session.send("Here is your account detail: <br/>Checked Account: %s <br/> Saved Account: %s",  phone[0], phone[1]);
 
 }

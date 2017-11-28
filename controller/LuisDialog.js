@@ -49,7 +49,7 @@ exports.startDialog = function (bot) {
                 if (results.response) {
                     session.conversationData["PhoneNumber"] = results.response;
                 }
-
+                
                 session.send("Retrieving your Account");
                 balance.displayphonenumber(session, session.conversationData["PhoneNumber"]);  // <---- THIS LINE HERE IS WHAT WE NEED 
             }
