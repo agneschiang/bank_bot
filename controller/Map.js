@@ -1,4 +1,4 @@
-var rest = requite('../API/RestClient');
+var rest = require('../API/RestClient');
 var builder = require('botbuilder');
 
 exports.displayMap = function getMapData(bank, region, session){
