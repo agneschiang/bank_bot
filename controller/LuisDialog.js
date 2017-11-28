@@ -120,10 +120,7 @@ exports.startDialog = function (bot) {
     ]).triggerAction({
         matches:'DisplayBooking'
 
-    }).reloadAction(
-        "retartDisplay", "Ok let's start over",{
-            matches: /^start over$/i,
-        });
+    });
 
 
     bot.dialog('DeleteBooking', [function (session, args, next) {
@@ -224,16 +221,7 @@ exports.startDialog = function (bot) {
     });
 
 
-    bot.dialog('Quit', function (session, args){
-        if(!Attachment(session)){
-            var quitEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'quit');
-            session.sned("Thank you for using our service");
-
-            
-        }
-    }).triggerAction({
-        matches: "Quit"
-    });
+    bot.endConversationAction('Quit', 'Hope you enjoy our services :)', { matches: /^Quit/i });
 
 }
 
