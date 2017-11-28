@@ -221,8 +221,9 @@ exports.startDialog = function (bot) {
     });
 
 
-    bot.endConversationAction('Quit', 'Hope you enjoy our services :)', function (session, args){
+    bot.endConversationAction('Quit', function (session, args){
         if(!isAttachment(session)){
+            session.sned("Hope you enjoy our service");
             session.conversationData = {}
             session.dialogData = {}
         }
