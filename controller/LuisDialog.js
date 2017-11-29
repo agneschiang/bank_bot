@@ -170,29 +170,7 @@ exports.startDialog = function (bot) {
                 matches: 'DeleteBooking'
         
             });
-
-    bot.dialog('Transaction', function (session, args) {
-        if (!isAttachment(session)) {
-
-            
-            var transactionEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'transaction');
-
-            
-            if (transactionEntity) {
-                session.send('Here is the instruction <br />');
-           
-
-            } else {
-                session.send("Sorry I don't quite understand! Please try again");
-            }
-        }
-    }).triggerAction({
-        matches: 'Transaction'
-    });
-
-    
-
-    bot.dialog('Location', function (session, args) {
+  bot.dialog('Location', function (session, args) {
         
                 if (!isAttachment(session)) {
                     
@@ -203,7 +181,7 @@ exports.startDialog = function (bot) {
                         session.send('Looking for %s detail...', locationEntity.entity);
                         location.displayAddress(locationEntity.entity, "auckland", session);
                     } else {
-                        session.send("No food identified! Please try again");
+                        session.send("Sorry I don't get it! Please try again (e.g. find the bank");
                     }
                }
         

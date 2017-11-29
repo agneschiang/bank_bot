@@ -30,14 +30,14 @@
         transition: 0.5s;
     }
 
-        #chat-button span:after {
-            content: '\00bb';
-            position: absolute;
-            opacity: 0;
-            top: 0;
-            right: -20px;
-            transition: 0.5s;
-        }
+	#chat-button span:after {
+		content: '\00bb';
+		position: absolute;
+		opacity: 0;
+		top: 0;
+		right: -20px;
+		transition: 0.5s;
+	}
 
     #chat-button: hover span {
         padding-right: 25px;
@@ -59,7 +59,7 @@
 
 #chat-frame {
     height: 400px;
-    width: 300px;
+    width: 320px;
 }
 
     #chat-frame img {
