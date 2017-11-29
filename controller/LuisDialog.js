@@ -54,6 +54,7 @@ exports.startDialog = function (bot) {
             else{
                 session.send("Don't quite get it, please try again")
         }
+    }
     ]).triggerAction({
         matches: 'Account'
     });
