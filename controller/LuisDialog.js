@@ -207,7 +207,7 @@ exports.startDialog = function (bot) {
 
     
 
-    bot.dialog('Currency', function(session, args) {
+    bot.dialog('Currency', [function(session, args) {
         if(!isAttachment(session)){
             var currencyEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'unit');
 
@@ -219,7 +219,9 @@ exports.startDialog = function (bot) {
                 session.send("No Category identified! Please try again");
             }
         }
-    }).triggerAction({
+    }
+    
+    ]).triggerAction({
         matches: 'Currency'
     });
 
