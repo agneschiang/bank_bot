@@ -23,7 +23,7 @@ exports.deleteBooking = function deleteBooking(session,PhoneNumber,time){
             if (Booking[i].time === time && Booking[i].PhoneNumber === PhoneNumber) {
 
 
-                rest.deleteBooking(url,session,PhoneNumber,time, Booking[i].id ,handleDeletedFoodResponse)
+                rest.deleteBooking(url,session,PhoneNumber,time, Booking[i].id ,handleDeletedBookingResponse)
 
             }
         }
@@ -39,30 +39,44 @@ function handleBookingResponse(message, session, PhoneNumber, time) {
     var booking = [];
     for (var index in BookingResponse) {
         var phoneNumberReceived = BookingResponse[index].PhoneNumber;
-        var timeRecieved = BookingResponse[index].time;
+        var timeRecieved = BookingResponse[index].time; //date --> 16th//
         console.log(BookingResponse[index]);
-        var bookingDate = BookingResponse[index].date;
+        var bookingDate = BookingResponse[index].date; //time ==> 9:00//
 
         //Convert to lower case whilst doing comparison to ensure the user can type whatever they like
-        if (PhoneNumber == phoneNumberReceived && time == timeRecieved) {
+        if (PhoneNumber == phoneNumberReceived && time == timeRecieved) { // date are the same//
             //Add a comma after all favourite foods unless last one
-            if(booking.length - 1) {
-                booking.push(bookingDate);
-            }
-            else {
-                booking.push(bookingDate);
-            }
-            session.send("Your booking is at %s", booking[0]);    
-        }     
-    }
-    
+            if (bookingDate != null){
+                if(booking.length - 1) {
+                    booking.push(bookingDate);
+                }
+                else {
+                    booking.push(bookingDate);
+                }
             
+            } 
+
+            session.send("Your booking is at %s", booking); 
+            }
+        
+        }
     
+    if(PhoneNumber != BookingResponse[index].PhoneNumber){
+        session.send("You have typed a wrong number, please type 'startover' to start again");
+    }
+
+    if(PhoneNumber == BookingResponse[index].PhoneNumber && time != BookingResponse[index].time){
+        session.send("You don't have any booking on that day");
+    }
+
+    
+    
+
 }
 
-function handleDeletedFoodResponse(body,session, PhoneNumber, time){
+function handleDeletedBookingResponse(body, session, PhoneNumber, time){
     
-            console.log('Done');
+        console.log('Done');
     
-    
+           
     }

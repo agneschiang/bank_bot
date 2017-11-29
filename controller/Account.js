@@ -30,16 +30,20 @@ function handlePhoneResponse(message, session, PhoneNumber) {
                 phone.push(checkedAcc);
                 phone.push(savedAcc)
             }
-
-            session.send("Here is your account detail: <br/>Checked Account: %s <br/> Saved Account: %s",  phone[0], phone[1]);
+            
         }
-        else{
-           session.send("You have given a wrong number, please type 'StartOver' ");
-           
-        }
-        
+    
     }
+    console.log(phoneResponse[index].PhoneNumber);
+   
+  if(PhoneNumber != phoneResponse[index].PhoneNumber ){
+    session.send("You have given a wrong number, please type 'StartOver' ");
+  }
 
+  else{
+    session.send("Here is your account detail: <br/>Checked Account: %s <br/> Saved Account: %s",  phone[0], phone[1]);
+
+  }
 
 
 }

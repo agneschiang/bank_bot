@@ -21,8 +21,7 @@ server.post('/api/messages', connector.listen());
 
 // Receive messages from the user
 var bot = new builder.UniversalBot(connector, function (session) {
-    session.send('HI');
-    session.send('Sorry, I did not understand \'%s\'. Type \'help\' if you need assistance.', session.message.text);
+    session.send('Sorry, I did not understand \'%s\'. try again with the the category below <br/> 1. Check your account <br/> 2. Check the office hour <br/> 3. Find the bank (e.g. Where is the bank) <br/>4. Make your booking (e.g. booking at 13 on the 16th) <br/> 5. Cancel your booking (e.g. cancel my booking on the 16th) <br/> 6. View Your booking (e.g. check my booking on the 16th) <br/> 7. Check the currency (e.g. currency for aud) <br/>8. Quit to start over', session.message.text);
 });
 
 // This line will call the function in your LuisDialog.js file
