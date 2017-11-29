@@ -181,7 +181,7 @@ exports.startDialog = function (bot) {
                         session.send('Looking for %s detail...', locationEntity.entity);
                         location.displayAddress(locationEntity.entity, "auckland", session);
                     } else {
-                        session.send("Sorry I don't get it! Please try again (e.g. find the bank");
+                        session.send("Sorry I don't get it! Please try again (e.g. where the bank)");
                     }
                }
         
