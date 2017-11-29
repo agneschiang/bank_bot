@@ -51,6 +51,8 @@ exports.startDialog = function (bot) {
                 session.send("Retrieving your Account");
                 balance.displayphonenumber(session, session.conversationData["PhoneNumber"]); 
             }
+            else{
+                session.send("Don't quite get it, please try again")
         }
     ]).triggerAction({
         matches: 'Account'
@@ -80,11 +82,11 @@ exports.startDialog = function (bot) {
                     session.send('Your booking confirm: <br> Time: \%s\ <br/> Date: \%s\.' , bookingEntity.entity, timeEntity.entity);
                     reserv.sendReservation(session, session.conversationData["PhoneNumber"], bookingEntity.entity, timeEntity.entity); // <-- LINE WE WANT
     
-                } else {
-                    session.send("Sorry I din't understand, please try again ");
-                }
+                }else{
+                    session.send("Don't quite get it, please try again")
             }
         }
+    }
                     
         
     ]).triggerAction({
@@ -115,10 +117,10 @@ exports.startDialog = function (bot) {
                     session.send("Your booking on the \%s\ is... ", dateEntity.entity);
                     reserv.displayBooking(session, session.conversationData["PhoneNumber"], dateEntity.entity);
                 }
+                else{
+                    session.send("Don't quite get it, please try again")
             }
-            else{
-                session.send("Please try again");
-            }
+            
         }
     ]).triggerAction({
         matches:'DisplayBooking'
@@ -153,9 +155,11 @@ exports.startDialog = function (bot) {
                                 session.send('Deleting \'%s\'...', dateEntity.entity);
                                 reserv.deleteBooking(session,session.conversationData['PhoneNumber'], dateEntity.entity); //<--- CALLL WE WANT
                             } 
-                        }
-                        else {
-                            session.send("No food identified! Please try again");
+
+                            else{
+                                session.send("Don't quite get it, please try again")
+                            }
+
                         }
         
             }
