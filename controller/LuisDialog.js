@@ -122,6 +122,7 @@ exports.startDialog = function (bot) {
             }
             
         }
+    }
     ]).triggerAction({
         matches:'DisplayBooking'
 
