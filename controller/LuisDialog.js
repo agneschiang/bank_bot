@@ -260,6 +260,6 @@ function isAttachment(session) {
     else {
         return false;
     }
-}
+    }
 
 }
