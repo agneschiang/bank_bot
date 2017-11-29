@@ -249,7 +249,7 @@ exports.startDialog = function (bot) {
     bot.endConversationAction('Quit', 'Hope you enjoy our services :)', { matches: /^Quit/i });
     bot.endConversationAction('StartOver', 'Type the category that you want to start over',{ matches: /^StartOver/i });
 
-}
+
 
 function isAttachment(session) { 
     var msg = session.message.text;
@@ -260,4 +260,6 @@ function isAttachment(session) {
     else {
         return false;
     }
+}
+
 }
