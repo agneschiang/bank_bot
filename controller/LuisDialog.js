@@ -8,7 +8,7 @@ var currency = require('./currency');
 exports.startDialog = function (bot) {
     
    
-    var recognizer = new builder.LuisRecognizer('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/70cf5534-311f-483a-a5e4-87fe75ba1906?subscription-key=5d65b5a6c5b749548b818b417b32c9d6&verbose=true&timezoneOffset=0&q=');
+    var recognizer = new builder.LuisRecognizer('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/0afb704d-e49e-461d-a156-4e9d37bde5ce?subscription-key=5d65b5a6c5b749548b818b417b32c9d6&verbose=true&timezoneOffset=0&q=');
 
     bot.recognizer(recognizer);
 
