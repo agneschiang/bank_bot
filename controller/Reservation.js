@@ -53,11 +53,7 @@ function handleBookingResponse(message, session, PhoneNumber, time) {
                 booking.push(bookingDate);
             }
             session.send("Your booking is at %s", booking[0]);    
-        }    
-        else{
-            session.send("You don't have any booking on the %s ", timeRecieved);
-            
-         }    
+        }     
     }
     
             

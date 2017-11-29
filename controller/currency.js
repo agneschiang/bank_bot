@@ -9,7 +9,6 @@ exports.displayCurrencyData = function getData(currency, session){
 function handleCurrencyResponse(message, session, currency){
     var attachment = [];
     var currencies = JSON.parse(message);
-    var name = "US" + currency;
     
     for (var index in currencies.quotes){
         var unit = currencies.quotes[index];
